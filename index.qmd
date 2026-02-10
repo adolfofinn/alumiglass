@@ -1,0 +1,153 @@
+---
+title: "Inicio"
+---
+
+## AlumiGlass
+
+**Venta e instalación de vidrios y aluminio** para hogares, oficinas y comercios en Lima.  
+Trabajos a medida, buen acabado y atención rápida.
+
+- Mamparas y puertas de ducha
+- Ventanas y puertas de aluminio
+- Espejos y divisiones
+- Vitrinas y proyectos comerciales
+
+[📩 Cotizar ahora](contacto.qmd){.btn .btn-primary .me-2}
+[📍 Ver ubicación](contacto.qmd){.btn .btn-outline-secondary}
+
+---
+
+## Proyectos destacados
+
+```{=html}
+<section class="hero-slider" aria-label="Proyectos destacados">
+  <button class="hs-nav hs-prev" type="button" aria-label="Anterior">‹</button>
+
+  <div class="hs-track" id="hs-track">
+    <article class="hs-slide">
+      <img src="images/inicio/ducha.png" alt="Puerta de ducha" loading="lazy">
+      <div class="hs-overlay">
+        <div class="hs-title">Puerta de ducha</div>
+        <div class="hs-sub">Instalación a medida • Acabado premium</div>
+      </div>
+    </article>
+
+    <article class="hs-slide">
+      <img src="images/inicio/espejo.png" alt="Espejo instalado" loading="lazy">
+      <div class="hs-overlay">
+        <div class="hs-title">Espejos</div>
+        <div class="hs-sub">Cortes exactos • Instalación segura</div>
+      </div>
+    </article>
+
+    <article class="hs-slide">
+      <img src="images/inicio/mapa.png" alt="Ubicación del negocio" loading="lazy">
+      <div class="hs-overlay">
+        <div class="hs-title">Ubícanos</div>
+        <div class="hs-sub">La Victoria • Atención rápida</div>
+      </div>
+    </article>
+
+    <article class="hs-slide">
+      <img src="images/inicio/perfil.png" alt="Marca AlumiGlass" loading="lazy">
+      <div class="hs-overlay">
+        <div class="hs-title">AlumiGlass</div>
+        <div class="hs-sub">Especialistas en vidrios y aluminio</div>
+      </div>
+    </article>
+  </div>
+
+  <button class="hs-nav hs-next" type="button" aria-label="Siguiente">›</button>
+  <div class="hs-dots" id="hs-dots" aria-label="Indicadores"></div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.getElementById("hs-track");
+  if (!track) return;
+
+  const prev  = document.querySelector(".hs-prev");
+  const next  = document.querySelector(".hs-next");
+  const dotsC = document.getElementById("hs-dots");
+  const slides = Array.from(track.querySelectorAll(".hs-slide"));
+
+  let index = 0;
+  let rafId = null;
+
+  function goTo(i, smooth = true) {
+    index = (i + slides.length) % slides.length;
+    const left = slides[index].offsetLeft;
+    track.scrollTo({ left, behavior: smooth ? "smooth" : "auto" });
+    updateDots();
+  }
+
+  function updateDots() {
+    if (!dotsC) return;
+    dotsC.querySelectorAll("button").forEach((b, i) => {
+      b.setAttribute("aria-current", i === index ? "true" : "false");
+    });
+  }
+
+  // Dots
+  if (dotsC) {
+    dotsC.innerHTML = slides.map((_, i) =>
+      `<button type="button" class="hs-dot" aria-label="Ir al slide ${i+1}" aria-current="${i===0}"></button>`
+    ).join("");
+
+    dotsC.querySelectorAll("button").forEach((b, i) => {
+      b.addEventListener("click", () => goTo(i));
+    });
+  }
+
+  // Flechas
+  prev?.addEventListener("click", () => goTo(index - 1));
+  next?.addEventListener("click", () => goTo(index + 1));
+
+  // Cuando haces scroll con mouse/touch, detectar slide visible y actualizar dots
+  function onScroll() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      const x = track.scrollLeft + track.clientWidth / 2;
+      let best = 0, bestDist = Infinity;
+
+      slides.forEach((s, i) => {
+        const mid = s.offsetLeft + s.clientWidth / 2;
+        const d = Math.abs(mid - x);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+
+      index = best;
+      updateDots();
+    });
+  }
+  track.addEventListener("scroll", onScroll, { passive: true });
+
+  // Recalcular al cambiar tamaño
+  window.addEventListener("resize", () => goTo(index, false));
+
+  // Init
+  goTo(0, false);
+});
+</script>
+```
+
+## Proceso: medición, diseño e instalación
+
+```{=html}
+<section class="video-section" aria-label="Video del proceso">
+  <div class="video-card">
+    <video class="proc-video"
+           controls
+           preload="metadata"
+           playsinline
+           poster="images/inicio/perfil.png">
+      <source src="images/inicio/octubre.mp4" type="video/mp4">
+      Tu navegador no soporta videos HTML5.
+    </video>
+
+    <div class="video-caption">
+      <strong>Así trabajamos:</strong> medición en obra → diseño → instalación y acabados.
+    </div>
+  </div>
+</section>
+```
