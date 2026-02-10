@@ -18,6 +18,16 @@ website:
       - text: "Cotizar"
         href: contacto.qmd
 
+      # Dropdown Light/Dark estilo Bootswatch
+      - text: "◐"
+        menu:
+          - text: "☀ Light"
+            href: "#"
+            id: theme-set-light
+          - text: "🌙 Dark"
+            href: "#"
+            id: theme-set-dark
+
   page-footer:
     border: true
     center:
@@ -35,6 +45,39 @@ website:
 format:
   html:
     theme:
-      light: flatly
-      dark: darkly
-    css: styles.css  
+      light: lux
+      dark: lux
+    css: styles.css
+    include-in-header:
+      - text: |
+          <script>
+          // Lux Light/Dark "real": mismo Lux, paleta dark por CSS variables + guardado en localStorage
+          (function () {
+            const KEY = "ag-theme";
+            const root = document.documentElement;
+
+            function getPreferred() {
+              const saved = localStorage.getItem(KEY);
+              if (saved === "light" || saved === "dark") return saved;
+              return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+            }
+
+            function apply(mode) {
+              root.setAttribute("data-bs-theme", mode);
+              localStorage.setItem(KEY, mode);
+            }
+
+            // aplica apenas cargue (antes de ver flash)
+            apply(getPreferred());
+
+            // expone helpers
+            window.AGTheme = { apply };
+
+            document.addEventListener("DOMContentLoaded", () => {
+              const aLight = document.getElementById("theme-set-light");
+              const aDark  = document.getElementById("theme-set-dark");
+              if (aLight) aLight.addEventListener("click", (e) => { e.preventDefault(); apply("light"); });
+              if (aDark)  aDark.addEventListener("click", (e) => { e.preventDefault(); apply("dark");  });
+            });
+          })();
+          </script>
